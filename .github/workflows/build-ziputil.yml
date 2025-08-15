@@ -34,8 +34,8 @@ jobs:
       - name: Download Android build-tools (for d8)
         run: |
           wget https://dl.google.com/android/repository/build-tools_r33.0.2-linux.zip -O build-tools.zip
-          unzip build-tools.zip -d build-tools
-          export PATH=$PWD/build-tools/build-tools/33.0.2:$PATH
+          unzip -q build-tools.zip -d build-tools
+          ls build-tools/build-tools/33.0.2/lib/
 
       - name: Convert JAR to DEX
         run: |
