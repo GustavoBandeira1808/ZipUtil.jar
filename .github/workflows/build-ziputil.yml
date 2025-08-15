@@ -31,16 +31,14 @@ jobs:
           jar cfe ../ZipUtil.jar ZipUtil ZipUtil.class
           cd ..
 
-      - name: Download Android build-tools (for d8)
+      - name: Download d8.jar from another repository
         run: |
-          wget https://dl.google.com/android/repository/build-tools_r33.0.2-linux.zip -O build-tools.zip
-          unzip -q build-tools.zip -d build-tools
-          ls build-tools/build-tools/33.0.2/lib/
+          wget -O d8.jar https://github.com/GustavoBandeira1808/ziputil-dex/raw/3f740e3acbafffc23c38303befffe40a37180325/tools/d8.jar
 
       - name: Convert JAR to DEX
         run: |
           mkdir -p dex_output
-          java -jar build-tools/build-tools/33.0.2/lib/d8.jar ZipUtil.jar --output dex_output
+          java -jar d8.jar ZipUtil.jar --output dex_output
 
       - name: Upload JAR and DEX artifacts
         uses: actions/upload-artifact@v4
