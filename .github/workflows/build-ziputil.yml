@@ -43,7 +43,7 @@ jobs:
           java -jar build-tools/build-tools/33.0.2/lib/d8.jar ZipUtil.jar --output dex_output
 
       - name: Upload JAR and DEX artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ZipUtil-artifacts
           path: |
