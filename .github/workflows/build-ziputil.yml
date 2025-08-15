@@ -1,4 +1,4 @@
-name: Build ZipUtil JAR (Java 7)
+name: Build ZipUtil JAR + DEX
 
 on:
   push:
@@ -14,24 +14,38 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK 7
+      - name: Set up JDK 8
         uses: actions/setup-java@v3
         with:
-          java-version: 7
+          java-version: 8
           distribution: temurin
 
-      - name: Compile Java source (Java 7)
+      - name: Compile Java source
         run: |
           mkdir -p bin
-          javac -source 1.7 -target 1.7 -d bin ZipUtil.java
+          javac -source 1.8 -target 1.8 -d bin ZipUtil.java
 
       - name: Create executable JAR
         run: |
           cd bin
           jar cfe ../ZipUtil.jar ZipUtil ZipUtil.class
+          cd ..
 
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v4
+      - name: Download Android build-tools (for d8)
+        run: |
+          wget https://dl.google.com/android/repository/build-tools_r33.0.2-linux.zip -O build-tools.zip
+          unzip build-tools.zip -d build-tools
+          export PATH=$PWD/build-tools/build-tools/33.0.2:$PATH
+
+      - name: Convert JAR to DEX
+        run: |
+          mkdir -p dex_output
+          java -jar build-tools/build-tools/33.0.2/lib/d8.jar ZipUtil.jar --output dex_output
+
+      - name: Upload JAR and DEX artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: ZipUtil
-          path: ZipUtil.jar
+          name: ZipUtil-artifacts
+          path: |
+            ZipUtil.jar
+            dex_output/classes.dex
