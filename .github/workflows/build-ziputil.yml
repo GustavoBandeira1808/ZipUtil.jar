@@ -1,4 +1,4 @@
-name: Build ZipUtil JAR
+name: Build ZipUtil JAR (Java 7)
 
 on:
   push:
@@ -14,16 +14,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK 8
+      - name: Set up JDK 7
         uses: actions/setup-java@v3
         with:
-          java-version: 8
+          java-version: 7
           distribution: temurin
 
-      - name: Compile Java source
+      - name: Compile Java source (Java 7)
         run: |
           mkdir -p bin
-          javac -source 1.8 -target 1.8 -d bin ZipUtil.java
+          javac -source 1.7 -target 1.7 -d bin ZipUtil.java
 
       - name: Create executable JAR
         run: |
@@ -31,7 +31,7 @@ jobs:
           jar cfe ../ZipUtil.jar ZipUtil ZipUtil.class
 
       - name: Upload JAR artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: ZipUtil
           path: ZipUtil.jar
