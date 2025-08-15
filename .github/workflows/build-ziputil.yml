@@ -20,18 +20,18 @@ jobs:
           java-version: 8
           distribution: temurin
 
-      - name: Compile Java sources
+      - name: Compile Java source
         run: |
           mkdir -p bin
-          javac -source 1.8 -target 1.8 -d bin src/**/*.java
+          javac -source 1.8 -target 1.8 -d bin ZipUtil.java
 
       - name: Create executable JAR
         run: |
           cd bin
-          jar cfe ../ZipUtil.jar ZipUtil $(find . -name "*.class")
+          jar cfe ../ZipUtil.jar ZipUtil ZipUtil.class
 
       - name: Upload JAR artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: ZipUtil
           path: ZipUtil.jar
